@@ -1,4 +1,4 @@
-# ADR-001: Choose Azure + Databricks for Project 2
+# ADR-002: Use ADLS Gen2 as Durable Lake Storage
 
 ## Status
 
