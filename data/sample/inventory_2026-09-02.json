@@ -1,0 +1,32 @@
+[
+  {
+    "product_id": "P001",
+    "warehouse_id": "WH01",
+    "quantity_on_hand": 125,
+    "observed_at": "2026-09-02T08:00:00Z"
+  },
+  {
+    "product_id": "P002",
+    "warehouse_id": "WH01",
+    "quantity_on_hand": 42,
+    "observed_at": "2026-09-02T08:00:00Z"
+  },
+  {
+    "product_id": "P003",
+    "warehouse_id": "WH01",
+    "quantity_on_hand": 68,
+    "observed_at": "2026-09-02T08:00:00Z"
+  },
+  {
+    "product_id": "P004",
+    "warehouse_id": "WH01",
+    "quantity_on_hand": 31,
+    "observed_at": "2026-09-02T08:00:00Z"
+  },
+  {
+    "product_id": "P005",
+    "warehouse_id": "WH01",
+    "quantity_on_hand": 57,
+    "observed_at": "2026-09-02T08:00:00Z"
+  }
+]

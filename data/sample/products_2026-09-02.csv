@@ -1,0 +1,6 @@
+product_id,product_name,category,unit_price,is_active
+P001,Wireless Mouse,Electronics,899.00,true
+P002,Mechanical Keyboard,Electronics,2499.00,true
+P003,USB-C Hub,Electronics,1599.00,true
+P004,Desk Lamp,Home Office,1199.00,true
+P005,Laptop Stand,Home Office,1399.00,true

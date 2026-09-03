@@ -1,0 +1,6 @@
+order_id,customer_id,product_id,quantity,unit_price,order_timestamp,status
+O1001,C001,P001,2,899.00,2026-09-01T10:15:00,completed
+O1002,C002,P002,1,2499.00,2026-09-01T11:40:00,completed
+O1003,C001,P003,1,1599.00,2026-09-01T13:05:00,completed
+O1004,C003,P004,2,1199.00,2026-09-02T08:35:00,pending
+O1005,C005,P005,1,1399.00,2026-09-02T09:50:00,completed
