@@ -1,0 +1,72 @@
+digraph AzureRetailLakehouse {
+  rankdir=LR;
+  graph [fontsize=11, labelloc="t", label="Azure Retail Analytics Lakehouse - Current Architecture"];
+  node [shape=box, style="rounded"];
+
+  subgraph cluster_sources {
+    label="Sources";
+    file [label="File source simulation\nsource/customers"];
+    api [label="DummyJSON REST API"];
+  }
+
+  subgraph cluster_azure {
+    label="Azure for Students - East Asia";
+
+    subgraph cluster_rg {
+      label="rg-retail-lakehouse-dev-eas-001";
+      adf [label="Azure Data Factory\nadf-retail-lakehouse-dev-eas-001"];
+      storage [label="ADLS Gen2\nstretaildeveas001"];
+      dbw [label="Azure Databricks\ndbw-retail-lakehouse-dev-eas-001"];
+      connector [label="Access Connector\nac-dbx-retail-lakehouse-dev-eas-001"];
+    }
+  }
+
+  subgraph cluster_lake {
+    label="ADLS filesystem: lakehouse";
+    source [label="source/"];
+    landing [label="landing/"];
+    bronze [label="bronze/\n(next)"];
+    silver [label="silver/\n(future)"];
+    gold [label="gold/\n(future)"];
+  }
+
+  subgraph cluster_adf {
+    label="ADF logical objects";
+    lsadls [label="ls_adls_lakehouse"];
+    lsrest [label="ls_rest_dummyjson"];
+    plcust [label="pl_ingest_customers_file_to_landing"];
+    plapi [label="pl_ingest_inventory_api_to_landing"];
+    foreach [label="foreach_inventory_pages"];
+    trigger [label="tr_inventory_api_daily\nStopped"];
+  }
+
+  subgraph cluster_uc {
+    label="Databricks / Unity Catalog";
+    cred [label="cred_adls_retail_lakehouse"];
+    ext [label="ext_retail_lakehouse"];
+    notebook [label="01_landing_exploration"];
+    spark [label="Default Interactive Compute\nServerless Spark"];
+  }
+
+  file -> plcust;
+  api -> plapi;
+  trigger -> plapi;
+  plapi -> foreach;
+  plcust -> landing [label="Copy"];
+  foreach -> landing [label="Paginated Copy"];
+
+  adf -> storage [style=dashed, label="System MI\nBlob Data Contributor"];
+  storage -> landing [dir=none];
+
+  dbw -> cred;
+  ext -> cred;
+  cred -> connector;
+  connector -> storage [style=dashed, label="System MI\nBlob Data Contributor"];
+  ext -> storage [label="abfss external location"];
+
+  landing -> notebook [label="spark.read"];
+  notebook -> spark;
+  spark -> bronze;
+  bronze -> silver;
+  silver -> gold;
+}

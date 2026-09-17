@@ -1,0 +1,67 @@
+flowchart LR
+    USER["Engineer / Azure CLI"]
+
+    subgraph SUB["Azure for Students - East Asia"]
+        BUDGET["Cost Budget<br/>project2-student-budget"]
+
+        subgraph RG["rg-retail-lakehouse-dev-eas-001"]
+            ADF["Azure Data Factory<br/>adf-retail-lakehouse-dev-eas-001"]
+            ST["ADLS Gen2<br/>stretaildeveas001"]
+            DBW["Azure Databricks<br/>dbw-retail-lakehouse-dev-eas-001"]
+            AC["Access Connector<br/>ac-dbx-retail-lakehouse-dev-eas-001"]
+        end
+    end
+
+    FILE["File source simulation<br/>source/customers"]
+    API["DummyJSON REST API"]
+
+    subgraph FS["ADLS filesystem: lakehouse"]
+        SRC["source/"]
+        LAND["landing/"]
+        BRONZE["bronze/<br/>next"]
+        SILVER["silver/<br/>future"]
+        GOLD["gold/<br/>future"]
+    end
+
+    subgraph ADFOBJ["ADF logical objects"]
+        LSADLS["ls_adls_lakehouse"]
+        LSREST["ls_rest_dummyjson"]
+        PLCUST["pl_ingest_customers_file_to_landing"]
+        PLAPI["pl_ingest_inventory_api_to_landing"]
+        FOREACH["foreach_inventory_pages"]
+        TRIG["tr_inventory_api_daily<br/>Stopped"]
+    end
+
+    subgraph UC["Databricks / Unity Catalog"]
+        CRED["cred_adls_retail_lakehouse"]
+        EXT["ext_retail_lakehouse"]
+        NOTE["01_landing_exploration"]
+        SPARK["Default Interactive Compute<br/>Serverless Spark"]
+    end
+
+    FILE --> PLCUST
+    API --> PLAPI
+    TRIG --> PLAPI
+    PLAPI --> FOREACH
+
+    PLCUST -->|"Copy"| LAND
+    FOREACH -->|"Paginated Copy"| LAND
+
+    ADF --- ADFOBJ
+    ST --- FS
+
+    ADF -. "System MI<br/>Blob Data Contributor" .-> ST
+
+    DBW --> CRED
+    CRED --> AC
+    EXT --> CRED
+    EXT -->|"abfss://lakehouse@..."| ST
+    AC -. "System MI<br/>Blob Data Contributor" .-> ST
+
+    LAND -->|"spark.read"| NOTE
+    NOTE --> SPARK
+    SPARK --> BRONZE
+    BRONZE --> SILVER
+    SILVER --> GOLD
+
+    USER -. "Blob Data Reader"| ST

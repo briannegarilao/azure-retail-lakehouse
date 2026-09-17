@@ -1,0 +1,42 @@
+flowchart TB
+    ENTRA["Microsoft Entra ID"]
+    RBAC["Azure RBAC"]
+
+    subgraph ADFG["ADF access"]
+        ADF["adf-retail-lakehouse-dev-eas-001"]
+        ADFMI["System-assigned managed identity"]
+        ADF --> ADFMI
+    end
+
+    subgraph USERG["Engineer access"]
+        USER["Signed-in Azure user"]
+    end
+
+    subgraph DBXG["Databricks / Unity Catalog access"]
+        DBX["dbw-retail-lakehouse-dev-eas-001"]
+        EXT["External Location<br/>ext_retail_lakehouse"]
+        CRED["Storage Credential<br/>cred_adls_retail_lakehouse"]
+        AC["Access Connector<br/>ac-dbx-retail-lakehouse-dev-eas-001"]
+        DBXMI["System-assigned managed identity"]
+
+        DBX --> EXT
+        EXT --> CRED
+        CRED --> AC
+        AC --> DBXMI
+    end
+
+    ST["ADLS Gen2<br/>stretaildeveas001<br/>filesystem: lakehouse"]
+
+    ADFMI --> ENTRA
+    USER --> ENTRA
+    DBXMI --> ENTRA
+
+    ENTRA --> RBAC
+
+    RBAC -->|"Storage Blob Data Contributor"| ADFMI
+    RBAC -->|"Storage Blob Data Contributor"| DBXMI
+    RBAC -->|"Storage Blob Data Reader"| USER
+
+    ADFMI -->|"ADF data plane"| ST
+    DBXMI -->|"Spark / UC data plane"| ST
+    USER -->|"CLI verification"| ST
