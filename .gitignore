@@ -34,3 +34,18 @@ airflow/logs/
 airflow/webserver_config.py
 airflow/standalone_admin_password.txt
 airflow/simple_auth_manager_passwords.json.generated
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Airflow local/runtime state
+airflow/.venv/
+airflow/airflow.db
+airflow/airflow.db-shm
+airflow/airflow.db-wal
+airflow/airflow.cfg
+airflow/logs/
+airflow/webserver_config.py
+airflow/standalone_admin_password.txt
+airflow/simple_auth_manager_passwords.json.generated
