@@ -18,3 +18,16 @@ crash.log
 crash.*.log
 terraform.tfvars
 *.auto.tfvars
+
+# Airflow
+airflow/.venv/
+airflow/airflow.db
+airflow/airflow.db-shm
+airflow/airflow.db-wal
+airflow/airflow.cfg
+airflow/logs/
+airflow/webserver_config.py
+airflow/standalone_admin_password.txt
+airflow/simple_auth_manager_passwords.json.generated
+
+.github/dbt/.user.yml
