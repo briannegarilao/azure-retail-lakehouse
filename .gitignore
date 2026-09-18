@@ -1,26 +1,31 @@
 # Python virtual environments
 .venv/
 venv/
+dbt/.venv/
+airflow/.venv/
 
 # dbt
 dbt/target/
 dbt/logs/
+dbt/retail_lakehouse/target/
+dbt/retail_lakehouse/logs/
 
 # Secrets / local configuration
 .env
 .env.*
+.github/dbt/.user.yml
 
 # Terraform
 .terraform/
+**/.terraform/
 *.tfstate
 *.tfstate.*
-crash.log
-crash.*.log
 terraform.tfvars
 *.auto.tfvars
+crash.log
+crash.*.log
 
-# Airflow
-airflow/.venv/
+# Airflow local state
 airflow/airflow.db
 airflow/airflow.db-shm
 airflow/airflow.db-wal
@@ -29,5 +34,3 @@ airflow/logs/
 airflow/webserver_config.py
 airflow/standalone_admin_password.txt
 airflow/simple_auth_manager_passwords.json.generated
-
-.github/dbt/.user.yml
