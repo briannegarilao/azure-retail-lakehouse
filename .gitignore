@@ -9,3 +9,12 @@ dbt/logs/
 # Secrets / local configuration
 .env
 .env.*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+terraform.tfvars
+*.auto.tfvars
