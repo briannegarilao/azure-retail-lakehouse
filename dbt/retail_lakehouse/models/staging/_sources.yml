@@ -1,0 +1,49 @@
+version: 2
+
+sources:
+
+  - name: silver
+    description: "Trusted Silver-layer Delta tables produced by PySpark transformations."
+    catalog: dbw_retail_lakehouse_dev_eas_001
+    schema: silver
+
+    tables:
+
+      - name: customers
+        description: "Cleaned and deduplicated customer records."
+        columns:
+          - name: customer_id
+            data_tests:
+              - not_null
+              - unique
+
+      - name: products
+        description: "Cleaned and validated product records."
+        columns:
+          - name: product_id
+            data_tests:
+              - not_null
+              - unique
+
+      - name: orders
+        description: "Validated order-product transaction records."
+        columns:
+          - name: order_id
+            data_tests:
+              - not_null
+
+          - name: customer_id
+            data_tests:
+              - not_null
+
+          - name: product_id
+            data_tests:
+              - not_null
+
+      - name: inventory
+        description: "Trusted inventory observations from the API source."
+        columns:
+          - name: product_id
+            data_tests:
+              - not_null
+              - unique

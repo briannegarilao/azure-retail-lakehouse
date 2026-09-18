@@ -1,0 +1,11 @@
+# Python virtual environments
+.venv/
+venv/
+
+# dbt
+dbt/target/
+dbt/logs/
+
+# Secrets / local configuration
+.env
+.env.*

@@ -1,0 +1,101 @@
+version: 2
+
+models:
+
+  - name: dim_customers
+    description: "Customer dimension with one row per customer."
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: email
+        data_tests:
+          - not_null
+
+  - name: dim_products
+    description: "Product dimension with one row per product."
+    columns:
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: unit_price
+        data_tests:
+          - not_null
+
+  - name: fact_orders
+    description: "Order-product transaction fact table."
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+
+      - name: quantity
+        data_tests:
+          - not_null
+
+      - name: unit_price
+        data_tests:
+          - not_null
+
+      - name: line_amount
+        data_tests:
+          - not_null
+
+      - name: order_timestamp
+        data_tests:
+          - not_null
+
+      - name: order_date
+        data_tests:
+          - not_null
+
+      - name: status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - pending
+                  - completed
+                  - cancelled
+
+  - name: mart_customer_sales
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: mart_product_sales
+    columns:
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: mart_daily_sales
+    columns:
+      - name: order_date
+        data_tests:
+          - not_null
+          - unique
