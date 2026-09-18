@@ -1,0 +1,16 @@
+retail_lakehouse:
+  target: ci
+
+  outputs:
+    ci:
+      type: databricks
+
+      host: dummy.azuredatabricks.net
+      http_path: /sql/1.0/warehouses/dummy
+
+      catalog: dbw_retail_lakehouse_dev_eas_001
+      schema: dbt_ci
+
+      token: dummy
+
+      threads: 4
